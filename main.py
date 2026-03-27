@@ -61,7 +61,6 @@ def session():
     
 def lägg_till_träning():
     
-
     användare = session.användarnamn
     filnamn = f"{användare}.json"
 
@@ -99,3 +98,32 @@ def lägg_till_träning():
 
     except Exception as e:
         print("Något blev gick fel:", e)
+
+def lägg_till_konto():
+    
+    print("Skap nytt konto")
+    användarnamn = input("välj ett användarnamn: ").lower
+    namn = input("Ange ditt riktiga namn: ")
+    kön = input("Ange biologiska kön(man eller kvinna): ").lower
+    ålder = int(input("Ange ålder: "))
+    längd = float(input("Ange längd i (cm): "))
+    vikt = float(input("Ange vikt i (kg): "))
+    
+    användare = {
+        "användarnamn": användarnamn,
+        "namn": namn,
+        "kön": kön,
+        "ålder": ålder,
+        "längd": längd,
+        "vikt": vikt    
+    }
+    
+    filnamn = f"{användarnamn}.json"
+    
+    # öppnar json filen i skrivläge, utf-8 gör så att svenska tecken åäö fungerar
+    with open(filnamn, "w", encoding="utf-8") as fil:
+        json.dump(användare, fil, ensure_ascii=False, indent=4)
+    
+    print(f"Ditt konto {användarnamn}, har sparats")
+
+    lägg_till_konto()
