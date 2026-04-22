@@ -1,163 +1,259 @@
 import json
 import datetime
+import os
 
+session = {"username": None}
 
-session = {"användarnamn": None}
+def clear():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-def träningslogg():
-    pass
+ACTIVITIES = [
+    {"activity": "running",         "met": {"low": 7.0,  "medium": 8.3,  "high": 11.0}},
+    {"activity": "cycling",         "met": {"low": 4.5,  "medium": 6.8,  "high": 10.0}},
+    {"activity": "swimming",        "met": {"low": 6.0,  "medium": 7.0,  "high": 9.5}},
+    {"activity": "walking",         "met": {"low": 2.8,  "medium": 3.5,  "high": 4.3}},
+    {"activity": "weight training", "met": {"low": 3.5,  "medium": 5.0,  "high": 6.0}},
+    {"activity": "yoga",            "met": {"low": 2.0,  "medium": 2.5,  "high": 3.0}},
+    {"activity": "aerobics",        "met": {"low": 6.5,  "medium": 7.3,  "high": 8.5}},
+    {"activity": "dancing",         "met": {"low": 3.5,  "medium": 5.0,  "high": 7.5}},
+    {"activity": "rowing machine",  "met": {"low": 5.5,  "medium": 7.0,  "high": 8.5}},
+    {"activity": "hiking",          "met": {"low": 5.0,  "medium": 6.0,  "high": 7.0}},
+    {"activity": "intercourse",     "met": {"low": 3.0,  "medium": 5.0,  "high": 5.8}},
+]
 
-def kalori_beräkning(aktivitet, tid_i_min):
-    aktiviteter = [
-        {"aktivitet": "löpning",      "met": {"låg": 7.0,  "medel": 8.3,  "hög": 11.0}},
-        {"aktivitet": "cykling",      "met": {"låg": 4.5,  "medel": 6.8,  "hög": 10.0}},
-        {"aktivitet": "simning",      "met": {"låg": 6.0,  "medel": 7.0,  "hög": 9.5}},
-        {"aktivitet": "promenad",     "met": {"låg": 2.8,  "medel": 3.5,  "hög": 4.3}},
-        {"aktivitet": "styrketräning","met": {"låg": 3.5,  "medel": 5.0,  "hög": 6.0}},
-        {"aktivitet": "yoga",         "met": {"låg": 2.0,  "medel": 2.5,  "hög": 3.0}},
-        {"aktivitet": "aerobics",     "met": {"låg": 6.5,  "medel": 7.3,  "hög": 8.5}},
-        {"aktivitet": "dans",         "met": {"låg": 3.5,  "medel": 5.0,  "hög": 7.5}},
-        {"aktivitet": "roddmaskin",   "met": {"låg": 5.5,  "medel": 7.0,  "hög": 8.5}},
-        {"aktivitet": "vandring",     "met": {"låg": 5.0,  "medel": 6.0,  "hög": 7.0}},
-        {"aktivitet": "samlag",       "met": {"låg": 3.0,  "medel": 5.0,  "hög": 5.8}},
-    ]
+def choose_activity():
+    clear()
+    print("\n=== Choose Activity ===")
+    for i, a in enumerate(ACTIVITIES, 1):
+        print(f"{i}. {a['activity'].capitalize()}")
+    while True:
+        choice = input("Enter number: ").strip()
+        if choice.isdigit() and 1 <= int(choice) <= len(ACTIVITIES):
+            return ACTIVITIES[int(choice) - 1]["activity"]
+        print(f"Please enter a number between 1 and {len(ACTIVITIES)}.")
 
-    def hitta_met(aktivitet):
-        aktivitet = aktivitet.lower()
-        for a in aktiviteter:
-            if aktivitet == a["aktivitet"].lower():
+def choose_intensity():
+    clear()
+    print("\n=== Choose Intensity ===")
+    print("1. Low")
+    print("2. Medium")
+    print("3. High")
+    while True:
+        choice = input("Enter number: ").strip()
+        if choice == "1":
+            return "low"
+        elif choice == "2":
+            return "medium"
+        elif choice == "3":
+            return "high"
+        print("Please enter 1, 2 or 3.")
+
+def calorie_calculation(activity, time_in_min, intensity):
+
+    def find_met(activity):
+        activity = activity.lower()
+        for a in ACTIVITIES:
+            if activity == a["activity"].lower():
                 return a["met"]
-        print("Din aktivitet hittades inte.")
         return None
 
-    def beräkna_kalorier(aktivitet, tid_i_min):
-        användare = session["användarnamn"]
-        filnamn = f"{användare}.json"
-        with open(filnamn, "r", encoding="utf-8") as file:
+    def calculate_calories(activity, time_in_min, intensity):
+        user = session["username"]
+        filename = f"{user}.json"
+        with open(filename, "r", encoding="utf-8") as file:
             data = json.load(file)
 
-        kön    = data["kön"]
-        vikt   = data["vikt"]
-        ålder  = data["ålder"]
-        längd  = data["längd"]
+        gender = data["gender"]
+        weight = data["weight"]
+        age    = data["age"]
+        height = data["height"]
 
-        met = hitta_met(aktivitet)
+        met = find_met(activity)
         if met is None:
             return 0
 
-        if kön.lower() == "man":
-            bmr = 66.47 + (13.75 * vikt) + (5.003 * längd) - (6.755 * ålder)
-        elif kön.lower() == "kvinna":
-            bmr = 655.1 + (9.563 * vikt) + (1.850 * längd) - (4.676 * ålder)
+        if gender.lower() == "male":
+            bmr = 66.47 + (13.75 * weight) + (5.003 * height) - (6.755 * age)
+        elif gender.lower() == "female":
+            bmr = 655.1 + (9.563 * weight) + (1.850 * height) - (4.676 * age)
         else:
-            raise ValueError("Kön måste vara 'man' eller 'kvinna'.")
+            raise ValueError("Gender must be 'male' or 'female'.")
 
-        kalorier = (bmr / 1440) * met["medel"] * tid_i_min
-        return round(kalorier, 2)
+        calories = (bmr / 1440) * met[intensity] * time_in_min
+        return round(calories, 2)
 
-    return beräkna_kalorier(aktivitet, tid_i_min)
+    return calculate_calories(activity, time_in_min, intensity)
 
-def lägg_till_träning():
-    användare = session["användarnamn"]
-    filnamn = f"{användare}.json"
+def add_workout():
+    clear()
+    user = session["username"]
+    filename = f"{user}.json"
 
     try:
-        with open(filnamn, "r", encoding="utf-8") as file:
+        with open(filename, "r", encoding="utf-8") as file:
             data = json.load(file)
 
-        aktivitet  = input("Aktivitet: ").strip()
-        tid_i_min  = float(input("Tid i minuter: "))
-        datum      = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        activity    = choose_activity()
+        intensity   = choose_intensity()
+        clear()
+        time_in_min = float(input("Time in minutes: "))
+        date        = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+        calories    = calorie_calculation(activity, time_in_min, intensity)
 
-        kalorier = kalori_beräkning(aktivitet, tid_i_min)
-
-        nytt_pass = {
-            "datum":      datum,
-            "aktivitet":  aktivitet,
-            "tid_i_min":  tid_i_min,
-            "kalorier":   kalorier
+        new_session = {
+            "date":        date,
+            "activity":    activity,
+            "intensity":   intensity,
+            "time_in_min": time_in_min,
+            "calories":    calories
         }
 
-        if "träning" not in data:
-            data["träning"] = []
-        data["träning"].append(nytt_pass)
+        if "workouts" not in data:
+            data["workouts"] = []
+        data["workouts"].append(new_session)
 
-        with open(filnamn, "w", encoding="utf-8") as file:
+        with open(filename, "w", encoding="utf-8") as file:
             json.dump(data, file, ensure_ascii=False, indent=4)
 
-        print("Träningspass sparat!")
+        clear()
+        print(f"\nWorkout saved! Estimated calories burned: {calories} kcal")
 
     except Exception as e:
-        print("Något gick fel:", e)
+        print("Something went wrong:", e)
 
-def lägg_till_konto():
-    print("Skapa nytt konto")
-    användarnamn = input("Välj ett användarnamn: ").lower()
-    namn         = input("Ange ditt riktiga namn: ")
-    kön          = input("Ange biologiska kön (man eller kvinna): ").lower()
-    ålder        = int(input("Ange ålder: "))
-    längd        = float(input("Ange längd i (cm): "))
-    vikt         = float(input("Ange vikt i (kg): "))
+def view_workouts():
+    clear()
+    user = session["username"]
+    filename = f"{user}.json"
 
-    användare = {
-        "användarnamn": användarnamn,
-        "namn":         namn,
-        "kön":          kön,
-        "ålder":        ålder,
-        "längd":        längd,
-        "vikt":         vikt
+    try:
+        with open(filename, "r", encoding="utf-8") as file:
+            data = json.load(file)
+
+        workouts = data.get("workouts", [])
+
+        if not workouts:
+            print("\nNo workouts logged yet.")
+            return
+
+        total_calories = sum(w["calories"] for w in workouts)
+        total_minutes  = sum(w["time_in_min"] for w in workouts)
+
+        print(f"\n=== Workout History for '{user}' ===")
+        print(f"{'#':<4} {'Date':<18} {'Activity':<18} {'Intensity':<12} {'Minutes':<10} {'Calories':<10}")
+        print("-" * 74)
+        for i, w in enumerate(workouts, 1):
+            print(f"{i:<4} {w['date']:<18} {w['activity'].capitalize():<18} {w.get('intensity', '-').capitalize():<12} {w['time_in_min']:<10} {w['calories']:<10} kcal")
+        print("-" * 74)
+        print(f"{'Total':<4} {'':<18} {'':<18} {'':<12} {total_minutes:<10} {total_calories:<10} kcal")
+
+    except Exception as e:
+        print("Something went wrong:", e)
+
+def create_account():
+    clear()
+    print("Create new account")
+    username = input("Choose a username: ").lower().strip()
+    gender   = input("Enter biological gender (male or female): ").lower().strip()
+    age      = int(input("Enter age: "))
+    height   = float(input("Enter height in (cm): "))
+    weight   = float(input("Enter weight in (kg): "))
+
+    user = {
+        "username": username,
+        "gender":   gender,
+        "age":      age,
+        "height":   height,
+        "weight":   weight
     }
 
-    filnamn = f"{användarnamn}.json"
-    with open(filnamn, "w", encoding="utf-8") as fil:
-        json.dump(användare, fil, ensure_ascii=False, indent=4)
+    filename = f"{username}.json"
+    with open(filename, "w", encoding="utf-8") as file:
+        json.dump(user, file, ensure_ascii=False, indent=4)
 
-    print(f"Ditt konto '{användarnamn}' har sparats!")
+    clear()
+    print(f"Your account '{username}' has been saved!")
 
-def logga_in():
-    användarnamn = input("Användarnamn: ").lower().strip()
-    filnamn = f"{användarnamn}.json"
+
+def delete_account():
+    clear()
+    user = session["username"]
+    filename = f"{user}.json"
+
+    confirm = input(f"Are you sure you want to delete '{user}'? (yes/no): ").lower().strip()
+
+    if confirm == "yes":
+        try:
+            os.remove(filename)
+            session["username"] = None
+            clear()
+            print("Account deleted successfully.")
+        except FileNotFoundError:
+            clear()
+            print("Account not found.")
+        except Exception as e:
+            print("Something went wrong:", e)
+    else:
+        clear()
+        print("Deletion canceled")
+
+
+
+def log_in():
+    clear()
+    username = input("Username: ").lower().strip()
+    filename = f"{username}.json"
     try:
-        with open(filnamn, "r", encoding="utf-8") as file:
+        with open(filename, "r", encoding="utf-8") as file:
             json.load(file)
-        session["användarnamn"] = användarnamn
-        print(f"Inloggad som '{användarnamn}'!")
+        session["username"] = username
+        clear()
+        print(f"Logged in as '{username}'!")
     except FileNotFoundError:
-        print("Kontot hittades inte.")
+        clear()
+        print("Account not found.")
 
 
 while True:
-    if session["användarnamn"] is None:
-        print("\n=== Välkommen ===")
-        print("1. Logga in")
-        print("2. Skapa konto")
-        print("3. Avsluta")
-        val = input("Välj: ").strip()
+    if session["username"] is None:
+        print("\n=== Welcome ===")
+        print("1. Log in")
+        print("2. Create account")
+        print("3. Quit")
+        choice = input("Choose: ").strip()
+        clear()
 
-        if val == "1":
-            logga_in()
-        elif val == "2":
-            lägg_till_konto()
-        elif val == "3":
-            print("Hej då!")
+        if choice == "1":
+            log_in()
+        elif choice == "2":
+            create_account()
+        elif choice == "3":
+            print("Goodbye!")
             break
         else:
-            print("Ogiltigt val, försök igen.")
+            print("Invalid choice, please try again.")
 
     else:
-        print(f"\n=== Inloggad som '{session['användarnamn']}' ===")
-        print("1. Lägg till träning")
-        print("2. Logga ut")
-        print("3. Avsluta")
-        val = input("Välj: ").strip()
+        print(f"\n=== Logged in as '{session['username']}' ===")
+        print("1. Add workout")
+        print("2. View all workouts")
+        print("3. Log out")
+        print("4. Quit")
+        print("5. Delete account")
+        choice = input("Choose: ").strip()
+        clear()
 
-        if val == "1":
-            lägg_till_träning()
-        elif val == "2":
-            session["användarnamn"] = None
-            print("Utloggad.")
-        elif val == "3":
-            print("Hej då!")
+        if choice == "1":
+            add_workout()
+        elif choice == "2":
+            view_workouts()
+        elif choice == "3":
+            session["username"] = None
+            print("Logged out.")
+        elif choice == "4":
+            print("Goodbye!")
             break
+        elif choice == "5":
+            delete_account()
         else:
-            print("Ogiltigt val, försök igen.")
+            print("Invalid choice, please try again.")
