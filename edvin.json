@@ -1,0 +1,23 @@
+{
+    "username": "edvin",
+    "gender": "male",
+    "age": 12,
+    "height": 175.0,
+    "weight": 100.0,
+    "workouts": [
+        {
+            "date": "2026-04-29 10:10",
+            "activity": "intercourse",
+            "intensity": "high",
+            "time_in_min": 40.0,
+            "calories": 360.23
+        },
+        {
+            "date": "2026-04-29 10:11",
+            "activity": "intercourse",
+            "intensity": "medium",
+            "time_in_min": 60.0,
+            "calories": 465.82
+        }
+    ]
+}

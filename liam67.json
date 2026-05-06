@@ -3,5 +3,14 @@
     "gender": "male",
     "age": 67,
     "height": 198.0,
-    "weight": 120.0
+    "weight": 120.0,
+    "workouts": [
+        {
+            "date": "2026-05-06 09:18",
+            "activity": "intercourse",
+            "intensity": "high",
+            "time_in_min": 0.5,
+            "calories": 4.54
+        }
+    ]
 }

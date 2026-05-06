@@ -23,7 +23,7 @@ ACTIVITIES = [
 
 def choose_activity():
     clear()
-    print("\n=== Choose Activity ===")
+    print("=== Choose Activity ===")
     for i, a in enumerate(ACTIVITIES, 1):
         print(f"{i}. {a['activity'].capitalize()}")
     while True:
@@ -34,7 +34,7 @@ def choose_activity():
 
 def choose_intensity():
     clear()
-    print("\n=== Choose Intensity ===")
+    print("=== Choose Intensity ===")
     print("1. Low")
     print("2. Medium")
     print("3. High")
@@ -97,6 +97,7 @@ def add_workout():
         intensity   = choose_intensity()
         clear()
         time_in_min = float(input("Time in minutes: "))
+        note        = input("Add a note (optional): ").strip()
         date        = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
         calories    = calorie_calculation(activity, time_in_min, intensity)
 
@@ -105,7 +106,8 @@ def add_workout():
             "activity":    activity,
             "intensity":   intensity,
             "time_in_min": time_in_min,
-            "calories":    calories
+            "calories":    calories,
+            "note":        note
         }
 
         if "workouts" not in data:
@@ -140,11 +142,11 @@ def view_workouts():
         total_minutes  = sum(w["time_in_min"] for w in workouts)
 
         print(f"\n=== Workout History for '{user}' ===")
-        print(f"{'#':<4} {'Date':<18} {'Activity':<18} {'Intensity':<12} {'Minutes':<10} {'Calories':<10}")
-        print("-" * 74)
+        print(f"{'#':<4} {'Date':<18} {'Activity':<18} {'Intensity':<12} {'Minutes':<10} {'Calories':<10} {'Note':<20}")
+        print("-" * 94)
         for i, w in enumerate(workouts, 1):
-            print(f"{i:<4} {w['date']:<18} {w['activity'].capitalize():<18} {w.get('intensity', '-').capitalize():<12} {w['time_in_min']:<10} {w['calories']:<10} kcal")
-        print("-" * 74)
+            print(f"{i:<4} {w['date']:<18} {w['activity'].capitalize():<18} {w.get('intensity', '-').capitalize():<12} {w['time_in_min']:<10} {w['calories']:<10} kcal {w.get('note', ''):<20}")
+        print("-" * 94)
         print(f"{'Total':<4} {'':<18} {'':<18} {'':<12} {total_minutes:<10} {total_calories:<10} kcal")
 
     except Exception as e:
@@ -174,7 +176,6 @@ def create_account():
     clear()
     print(f"Your account '{username}' has been saved!")
 
-
 def delete_account():
     clear()
     user = session["username"]
@@ -197,8 +198,6 @@ def delete_account():
         clear()
         print("Deletion canceled")
 
-
-
 def log_in():
     clear()
     username = input("Username: ").lower().strip()
@@ -212,7 +211,6 @@ def log_in():
     except FileNotFoundError:
         clear()
         print("Account not found.")
-
 
 while True:
     if session["username"] is None:
