@@ -141,13 +141,31 @@ def view_workouts():
         total_calories = sum(w["calories"] for w in workouts)
         total_minutes  = sum(w["time_in_min"] for w in workouts)
 
-        print(f"\n=== Workout History for '{user}' ===")
-        print(f"{'#':<4} {'Date':<18} {'Activity':<18} {'Intensity':<12} {'Minutes':<10} {'Calories':<10} {'Note':<20}")
-        print("-" * 94)
+        print(f"\n=== Workout History for '{user}' ===\n")
+
+        # Kolumnrubriker
+        header = f"{'#':<3} {'Date':<16} {'Activity':<16} {'Intensity':<10} {'Min':>6} {'Kcal':>8}  Note"
+        print(header)
+        print("-" * len(header))
+
         for i, w in enumerate(workouts, 1):
-            print(f"{i:<4} {w['date']:<18} {w['activity'].capitalize():<18} {w.get('intensity', '-').capitalize():<12} {w['time_in_min']:<10} {w['calories']:<10} kcal {w.get('note', ''):<20}")
-        print("-" * 94)
-        print(f"{'Total':<4} {'':<18} {'':<18} {'':<12} {total_minutes:<10} {total_calories:<10} kcal")
+            print(
+                f"{i:<3} "
+                f"{w['date']:<16} "
+                f"{w['activity'].capitalize():<16} "
+                f"{w.get('intensity','-').capitalize():<10} "
+                f"{w['time_in_min']:>6.1f} "
+                f"{w['calories']:>8.2f}  "
+                f"{w.get('note','')}"
+            )
+
+        print("-" * len(header))
+        print(
+            f"{'Tot':<3} "
+            f"{'':<16} {'':<16} {'':<10} "
+            f"{total_minutes:>6.1f} "
+            f"{total_calories:>8.2f}"
+        )
 
     except Exception as e:
         print("Something went wrong:", e)
