@@ -19,6 +19,22 @@
             "time_in_min": 0.3,
             "calories": 2.72,
             "note": "Gjorde det med vidar"
+        },
+        {
+            "date": "2026-05-08 10:09",
+            "activity": "weight training",
+            "intensity": "high",
+            "time_in_min": 60.0,
+            "calories": 563.62,
+            "note": "push"
+        },
+        {
+            "activity": "Weights",
+            "symbol": "🏋️",
+            "intensity": "high",
+            "time_in_min": 120.0,
+            "calories": 1315.1,
+            "date": "2026-05-08"
         }
     ]
 }
