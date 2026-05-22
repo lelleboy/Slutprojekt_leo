@@ -3,7 +3,7 @@
     "gender": "male",
     "age": 67,
     "height": 198.0,
-    "weight": 120.0,
+    "weight": 140.0,
     "workouts": [
         {
             "date": "2026-05-06 09:18",
@@ -35,6 +35,24 @@
             "time_in_min": 120.0,
             "calories": 1315.1,
             "date": "2026-05-08"
+        }
+    ],
+    "weight_history": [
+        {
+            "date": "05-22",
+            "weight": 112.0
+        },
+        {
+            "date": "05-22",
+            "weight": 67.0
+        },
+        {
+            "date": "05-22",
+            "weight": 78.0
+        },
+        {
+            "date": "05-22",
+            "weight": 140.0
         }
     ]
 }
