@@ -3,7 +3,7 @@
     "gender": "male",
     "age": 67,
     "height": 198.0,
-    "weight": 140.0,
+    "weight": 77.0,
     "workouts": [
         {
             "date": "2026-05-06 09:18",
@@ -35,6 +35,38 @@
             "time_in_min": 120.0,
             "calories": 1315.1,
             "date": "2026-05-08"
+        },
+        {
+            "activity": "Climbing",
+            "intensity": "low",
+            "time_in_min": 30.0,
+            "calories": 234.8,
+            "date": "2026-05-27",
+            "comment": "jobbigt"
+        },
+        {
+            "activity": "Running",
+            "intensity": "low",
+            "time_in_min": 60.0,
+            "calories": 357.4,
+            "date": "2026-05-27",
+            "comment": ""
+        },
+        {
+            "activity": "Running",
+            "intensity": "medium",
+            "time_in_min": 60.0,
+            "calories": 494.4,
+            "date": "2026-05-27",
+            "comment": ""
+        },
+        {
+            "activity": "Running",
+            "intensity": "medium",
+            "time_in_min": 40.0,
+            "calories": 380.3,
+            "date": "2026-05-27",
+            "comment": ""
         }
     ],
     "weight_history": [
@@ -53,6 +85,26 @@
         {
             "date": "05-22",
             "weight": 140.0
+        },
+        {
+            "date": "05-27",
+            "weight": 120.0
+        },
+        {
+            "date": "05-27",
+            "weight": 60.0
+        },
+        {
+            "date": "05-27",
+            "weight": 60.0
+        },
+        {
+            "date": "05-27",
+            "weight": 76.0
+        },
+        {
+            "date": "05-27",
+            "weight": 77.0
         }
     ]
 }
