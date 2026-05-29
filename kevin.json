@@ -1,0 +1,35 @@
+{
+    "username": "kevin",
+    "gender": "male",
+    "age": 14,
+    "height": 183.0,
+    "weight": 120.0,
+    "workouts": [
+        {
+            "activity": "Weights",
+            "intensity": "high",
+            "time_in_min": 80.0,
+            "calories": 703.4,
+            "date": "2026-05-27",
+            "comment": "mycket svett"
+        }
+    ],
+    "weight_history": [
+        {
+            "date": "05-27",
+            "weight": 67.0
+        },
+        {
+            "date": "05-27",
+            "weight": 67.0
+        },
+        {
+            "date": "05-27",
+            "weight": 63.0
+        },
+        {
+            "date": "05-29",
+            "weight": 120.0
+        }
+    ]
+}
